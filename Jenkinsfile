@@ -24,7 +24,6 @@ pipeline {
                         target: 'src'
                     ),
                     type: 'Static Analyzer',
-                    
             }
         }
 
@@ -37,7 +36,6 @@ pipeline {
                         target: '.'
                     ),
                     type: 'Software Composition Analysis',
-                   
             }
         }
     }
