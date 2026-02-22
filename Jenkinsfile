@@ -23,7 +23,7 @@ pipeline {
                         scanSpeed: 'fast',
                         target: 'src'
                     ),
-                    type: 'Static Analyzer',
+                    type: 'Static Analyzer'
             }
         }
 
@@ -35,7 +35,7 @@ pipeline {
                     scanner: software_composition_analyzer(
                         target: '.'
                     ),
-                    type: 'Software Composition Analysis',
+                    type: 'Software Composition Analysis'
             }
         }
     }
