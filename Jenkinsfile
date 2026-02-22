@@ -24,9 +24,7 @@ pipeline {
                         target: 'src'
                     ),
                     type: 'Static Analyzer',
-                    waitForResults: true,
-                    failBuild: false,
-                    emailNotification: false
+                    
             }
         }
 
@@ -39,9 +37,7 @@ pipeline {
                         target: '.'
                     ),
                     type: 'Software Composition Analysis',
-                    waitForResults: true,
-                    failBuild: false,
-                    emailNotification: false
+                   
             }
         }
     }
