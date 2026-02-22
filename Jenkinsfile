@@ -1,29 +1,57 @@
 pipeline {
     agent any
+
+    environment {
+        APPSCAN_APP_ID = '2dd05bbd-6429-4d47-9228-af780c48bc7e'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
-                echo '✅ Codice scaricato da GitHub'
+                git branch: 'main',
+                    url: 'https://github.com/mattiaRaffaldi/Jenkins_WebGoat_DSO.git'
             }
         }
-        stage('AppScan SAST') {
+
+        stage('SAST - Static Analysis') {
             steps {
-                echo '🔍 Avvio scansione SAST con AppScan on Cloud...'
-                appscan application: '2dd05bbd-6429-4d47-9228-af780c48bc7e',
-                         credentials: 'appscan',
-                         name: "SAST-${env.BUILD_NUMBER}",
-                         scanner: static_analyzer(hasOptions: true, scanSpeed: 'fast'),
-                         type: 'Static Analyzer'
+                appscan application: "${APPSCAN_APP_ID}",
+                    credentials: 'appscan',
+                    name: "SAST-${env.BUILD_NUMBER}",
+                    scanner: static_analyzer(
+                        hasOptions: true,
+                        scanSpeed: 'fast',
+                        target: 'src'
+                    ),
+                    type: 'Static Analyzer',
+                    waitForResults: true,
+                    failBuild: false,
+                    emailNotification: false
+            }
+        }
+
+        stage('SCA - Software Composition Analysis') {
+            steps {
+                appscan application: "${APPSCAN_APP_ID}",
+                    credentials: 'appscan',
+                    name: "SCA-${env.BUILD_NUMBER}",
+                    scanner: software_composition_analyzer(
+                        target: '.'
+                    ),
+                    type: 'Software Composition Analysis',
+                    waitForResults: true,
+                    failBuild: false,
+                    emailNotification: false
             }
         }
     }
+
     post {
         success {
-            echo '✅ Security Gate SUPERATO'
+            echo 'Scansioni di sicurezza completate!'
         }
         failure {
-            echo '❌ BUILD FALLITO — Vulnerabilità critiche rilevate!'
+            echo 'Build fallita — controlla i risultati delle scansioni'
         }
     }
 }
