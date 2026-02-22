@@ -21,7 +21,7 @@ pipeline {
                     scanner: static_analyzer(
                         hasOptions: true,
                         scanSpeed: 'fast',
-                        target: 'src'
+                        target: ' '
                     ),
                     type: 'Static Analyzer'
             }
