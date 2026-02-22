@@ -13,8 +13,8 @@ pipeline {
                 appscan application: '2dd05bbd-6429-4d47-9228-af780c48bc7e',
                          credentials: 'appscan',
                          name: "SAST-${env.BUILD_NUMBER}",
-                         scanner: static_analyzer(hasOptions: true, scanSpeed: 'fast', target: '.'),
-                         type: 'Software Composition Analysis'
+                         scanner: static_analyzer(hasOptions: true, scanSpeed: 'fast', target: ''),
+                         type: 'Static Analyzer'
             }
         }
     }
